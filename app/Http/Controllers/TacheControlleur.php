@@ -4,9 +4,32 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 Use App\Tache;
+Use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class TacheControlleur extends Controller
 {
+
+    // store all users
+    public $users;
+
+    public function __construct()
+    {
+        $this->users=User::getAllUsers();
+    }
+    /**
+     * Assign a tache to user
+     * @param App\Tache @tache
+     * @param App\User @user
+     * @return \Illuminate\Http\Response
+     */
+    public function affectedTo(Tache $tache, User $user){
+        $tache->affectedTo_id = $user->id;
+        $tache->affectedBy_id = Auth::user()->id;
+        $tache->update();
+        return back();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,9 +37,14 @@ class TacheControlleur extends Controller
      */
     public function index()
     {
+
         //$datas = Tache::All();
         //$this->data['tache']=Tache::All();
-        $this->data['tache']=Tache::paginate(10);
+        $userId = Auth::user()->id;
+        $this->data['tache']=Tache::where(['affectedTo_id' => $userId])->orderBy('id','desc')->paginate(10);
+        //$this->data['tache']=Tache::paginate(10);
+        $this->data['users']=$this->users;
+        
         /*
         $this->data['tache']=Tache::All()->reject( function ($tache){
             return $tache->done == 0;
@@ -29,6 +57,7 @@ class TacheControlleur extends Controller
      */
     public function done(){
         $this->data['tache']=Tache::where('done',1)->paginate(10);
+        $this->data['users']=$this->users;
         return view('taches.index', $this->data);
     }
     /**
@@ -36,6 +65,7 @@ class TacheControlleur extends Controller
      */
     public function undone(){
         $this->data['tache']=Tache::where('done',0)->paginate(10);
+        $this->data['users']=$this->users;
         return view('taches.index', $this->data);
     }
 
@@ -61,6 +91,9 @@ class TacheControlleur extends Controller
     public function store(Request $request)
     {
         $tache = new Tache();
+
+        $tache->creator_id=Auth::user()->id;
+        $tache->affectedTo_id =Auth::user()->id;
         $tache->nom=$request->nom;
         $tache->description = $request->description;
         $tache->save();
@@ -97,12 +130,12 @@ class TacheControlleur extends Controller
      * @param  Tache  $tache
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tache $tache)
+    public function update(Request $request, $id)
     {
-        if(isset($request->done)){
-            $request['done']=0;
+        $tache = Tache::findOrFail($id);
+        if (!isset ($request->done)) {
+            $request['done'] = 0;
         }
-        //dd($request);
         $tache->update($request->all());
         return redirect()->route('taches.index');
     }

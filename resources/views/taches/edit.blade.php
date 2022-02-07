@@ -14,7 +14,7 @@
         <div class="form-group">
           <label for="name">Titre</label>
           <input type="text" name="nom" class="form-control" id="name" aria-describedby="nameHelp"
-            value="{{ old('name', $tache->nom) }}">
+            value="{{ old('nom', $tache->nom) }}">
           <small id="nameHelp" class="form-text text-muted">Entrez le titre de votre tache.</small>
         </div>
         <div class="form-group">

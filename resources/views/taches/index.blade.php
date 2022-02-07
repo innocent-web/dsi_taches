@@ -38,7 +38,18 @@
             <strong>{{ $data->nom}} @if( $data->done)<span class="badge badge-success">Terminé</span>@endif</strong>
         </div>
         <div class="col-sm form-inline justify-content-end my-1">
-            
+
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                            Affecter à
+                        </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    @foreach ($users as $user)
+                        <a href="/taches/{{$data->id}}/affectedTo/{{$user->id}}" class="dropdown-item">{{ $user->name}}</a>
+                    @endforeach
+                </div>
+            </div>
             @if($data->done == 0 )
             <form action="{{ route('taches.makedone',$data->id)}}" method ="post">
                 @csrf 
