@@ -17,25 +17,20 @@ class TacheControlleur extends Controller
     {
         $this->users=User::getAllUsers();
     }
-    public function test(){
-        //dd("sddghs");
-        return view('taches.test');
-    }
     /**
      * Assign a tache to user
      * @param App\Tache @tache
      * @param App\User @user
      * @return \Illuminate\Http\Response
      */
-    public function affectedto($id, User $user){
-        /*
-        $tache = Tache::findOrFail($id);
+    public function affectedto(Tache $tache,User $user){
         $tache->affectedTo_id = $user->id;
-        $tache->affectedBy_id = Auth::user()->id;*/
-        dd("gflghkfh");
-        //$tache->update();
+        $tache->affectedBy_id = Auth::user()->id;
+        $tache->update();
         return back();
     }
+    
+    
 
     /**
      * Display a listing of the resource.

@@ -10,10 +10,8 @@ class AproposControlleur extends Controller
     public function index(){
         return view('apropos.index');
     }
+
     
-    public function test(){
-        return view('apropos.index');
-    }
 
 
 }
