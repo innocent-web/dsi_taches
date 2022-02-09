@@ -46,7 +46,7 @@
                         </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     @foreach ($users as $user)
-                        <a href="/taches/{{$data->id}}/affectedTo/{{$user->id}}" class="dropdown-item">{{ $user->name}}</a>
+                        <a href="taches/{{$data->id}}/affectedTo/{{$user->id}}" class="dropdown-item">{{ $user->name}}</a>
                     @endforeach
                 </div>
             </div>

@@ -17,16 +17,23 @@ class TacheControlleur extends Controller
     {
         $this->users=User::getAllUsers();
     }
+    public function test(){
+        //dd("sddghs");
+        return view('taches.test');
+    }
     /**
      * Assign a tache to user
      * @param App\Tache @tache
      * @param App\User @user
      * @return \Illuminate\Http\Response
      */
-    public function affectedTo(Tache $tache, User $user){
+    public function affectedto($id, User $user){
+        /*
+        $tache = Tache::findOrFail($id);
         $tache->affectedTo_id = $user->id;
-        $tache->affectedBy_id = Auth::user()->id;
-        $tache->update();
+        $tache->affectedBy_id = Auth::user()->id;*/
+        dd("gflghkfh");
+        //$tache->update();
         return back();
     }
 
@@ -41,6 +48,7 @@ class TacheControlleur extends Controller
         //$datas = Tache::All();
         //$this->data['tache']=Tache::All();
         $userId = Auth::user()->id;
+       
         $this->data['tache']=Tache::where(['affectedTo_id' => $userId])->orderBy('id','desc')->paginate(10);
         //$this->data['tache']=Tache::paginate(10);
         $this->data['users']=$this->users;
