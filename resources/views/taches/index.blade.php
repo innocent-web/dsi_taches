@@ -35,7 +35,43 @@
 <div class="alert alert-{{ $data->done ? 'success':'danger' }}" role="alert">
     <div class="row">
         <div class="col-sm">
-            <strong>{{ $data->nom}} @if( $data->done)<span class="badge badge-success">Terminé</span>@endif</strong>
+            <p class="my-0">
+                <strong>
+                    <span class="badge badge-dark">
+                        #{{$data->id}}
+                    </span>
+                </strong>
+                <small>
+                    Crée {{ $data->created_at->from() }} par 
+                    {{ Auth::user()->id ==$data->user->id ? 'moi' : $data->user->name  }}
+                    @if ($data->tacheAffectedTo && $data->tacheAffectedTo->id == Auth::user()->id)
+                    affectée à moi
+                    @elseif($data->tacheAffectedTo)
+                    {{ $data->tacheAffectedTo ? ', affectée à '.$data->tacheAffectedTo->name: ''}}
+                    @endif
+                    {{-- display affected by someone or by user himself --}}
+                    @if ($data->tacheAffectedTo && $data->tacheAffectedBy && $data->tacheAffectedBy->id == Auth::user()->id)
+                    par moi-même :D 
+                    @elseif ($data->tacheAffectedTo && $data->tacheAffectedBy && $data->tacheAffectedBy->id != Auth::user()->id)
+                    par {{ $data->tacheAffectedBy->name }}
+                    @endif
+                </small>
+                @if($data->done)
+                <small>
+                    <p>
+                        Terminée
+                        {{ $data->updated_at->from() }} - Terminée en 
+                        {{ $data->updated_at->diffForHumans($data->created_at, 1)}}
+                    </p>
+                </small>
+                @endif
+            </p> 
+            <details>
+                <summary>
+                    <strong>{{ $data->nom}} @if( $data->done)<span class="badge badge-success">Terminé</span>@endif</strong>
+                </summary>
+                <p>{{ $data->description}}</p>
+            </details> 
         </div>
         <div class="col-sm form-inline justify-content-end my-1">
 

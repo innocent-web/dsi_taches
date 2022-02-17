@@ -27,7 +27,7 @@ class TacheControlleur extends Controller
         $tache->affectedTo_id = $user->id;
         $tache->affectedBy_id = Auth::user()->id;
         $tache->update();
-        return back();
+        return back(); 
     }
     
     

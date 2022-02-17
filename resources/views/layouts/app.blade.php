@@ -33,7 +33,12 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <li class="nav-item">
+                            <a href="{{ route('taches.index')}}" class="nav-link">Les taches</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('apropos')}}" class="nav-link">A propos</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

@@ -22,6 +22,12 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/home';
+    /**
+     * The path to the "taches" route for your application.
+     *
+     * @var string
+     */
+    public const TACHES = '/taches';
 
     /**
      * Define your route model bindings, pattern filters, etc.
