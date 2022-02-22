@@ -99,15 +99,24 @@
                 <button type="submit" class="btn btn-warning mx-1" style="min-width:110px">Non terminé</button>
             </form>
             @endif
-
+            @can('edit',$data)
             <a name="" id="" class="btn btn-info mx-1" href="{{ route('taches.edit',$data->id) }}" role="button">Editer</a>
-            
+            @elsecannot('edit',$data)
+            <a name="" id="" class="btn btn-info mx-1 disabled" href="{{ route('taches.edit',$data->id) }}" role="button">Editer</a>
+            @endcan
+            @can('delete',$data)
             <form action="{{ route('taches.destroy',$data->id) }}" method ="post">
                 @csrf 
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger mx-1">Effacer </button>
             </form>
-            
+            @elsecannot('delete',$data)
+            <form action="{{ route('taches.destroy',$data->id) }}" method ="post">
+                @csrf 
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger mx-1 " disabled>Effacer </button>
+            </form>
+            @endcan
         </div>
     </div>
 </div>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
+use App\Notifications\TacheAffected;
 Use App\Tache;
 Use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +29,7 @@ class TacheControlleur extends Controller
         $tache->affectedTo_id = $user->id;
         $tache->affectedBy_id = Auth::user()->id;
         $tache->update();
+        $user->notify(new TacheAffected($tache));
         return back(); 
     }
     
@@ -100,6 +103,7 @@ class TacheControlleur extends Controller
         $tache->nom=$request->nom;
         $tache->description = $request->description;
         $tache->save();
+        notify()->success("La tache <span class='badge badge-dark'>#$tache->id</span> vient d'être créée");
         return redirect()->route('taches.index');
     }
 
@@ -140,6 +144,7 @@ class TacheControlleur extends Controller
             $request['done'] = 0;
         }
         $tache->update($request->all());
+        notify()->success("La tache <span class='badge badge-dark'>#$tache->id</span> a été bien mise à jour");
         return redirect()->route('taches.index');
     }
 
@@ -153,6 +158,7 @@ class TacheControlleur extends Controller
     {
         $tache=Tache::find($id);
         $tache->delete();
+        notify()->error("La tache <span class='badge badge-dark'>#$tache->id</span> a été suprimée");
         return back();
     }
     /**
@@ -161,6 +167,7 @@ class TacheControlleur extends Controller
     public function makedone(Tache $tache){
         $tache->done = 1;
         $tache->update();
+        notify()->success("La tache <span class='badge badge-dark'>#$tache->id</span> a bien été terminée");
         return back();
     }
     /**
@@ -169,6 +176,7 @@ class TacheControlleur extends Controller
     public function makeundone(Tache $tache){
         $tache->done = 0;
         $tache->update();
+        notify()->success("La tache <span class='badge badge-dark'>#$tache->id</span> est à nouveau ouverte");
         return back();
     }
 }
